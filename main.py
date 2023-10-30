@@ -16,7 +16,6 @@ if __name__ == '__main__':
         complexs = f.readlines()
 
     complex_list = [[] for i in range(10)]
-    # step = len(complexs) // 10
     for i in range(len(complexs)):
         complex_list[i % 10].append(complexs[i])
         # complex_list.append(complexs[i * step : (i + 1) * step]) # last element in i group is first element in i+1 group
@@ -29,8 +28,8 @@ if __name__ == '__main__':
     # split complexs
     downloaded_complexs = os.listdir(PDB_SAVE_PATH)
     downloaded_complexs_lsit = [[] for i in range(10)]
-    for i in range(len(download_complexs)):
-        downloaded_complexs_lsit[i % 10].append(downloaded_complexs[i])
+    for i in range(len(downloaded_complexs)):
+        downloaded_complexs_lsit[i % 10].append(downloaded_complexs[i].split('.')[0])
 
     for i in range(10):
         t = threading.Thread(target=split_complex, args=(PDB_SAVE_PATH, SPLIT_PDB_SAVE_PATH, downloaded_complexs_lsit[i]))
@@ -40,10 +39,10 @@ if __name__ == '__main__':
     remove_heteroatom_complexs = os.listdir(SPLIT_PDB_SAVE_PATH)
     remove_heteroatom_complexs_lsit = [[] for i in range(10)]
     for i in range(len(remove_heteroatom_complexs)):
-        remove_heteroatom_complexs_lsit[i % 10].append(downloaded_complexs[i])
+        remove_heteroatom_complexs_lsit[i % 10].append(remove_heteroatom_complexs[i].split('.')[0])
 
     for i in range(10):
-        t = threading.Thread(target=remove_heteroatom, args=(SPLIT_PDB_SAVE_PATH, NOHETEROATOM_PDB_SAVE_PATH,  remove_heteroatom_complexs_lsit[i]))
+        t = threading.Thread(target=remove_heteroatom, args=(SPLIT_PDB_SAVE_PATH, NOHETEROATOM_PDB_SAVE_PATH, remove_heteroatom_complexs_lsit[i]))
         t.start()
 
 
