@@ -20,33 +20,33 @@ class RemoveHeteroatoms(Select):
 # split complex into protein and RNA  
 def split_complex(src_path, save_path, complexs):
     for complex in complexs:
-        path = os.path.join(src_path, complex)
-        save_path = os.path.join(save_path, complex.lower())
+        # path = os.path.join(src_path, complex)
+        path = os.path.join(save_path, complex.lower())
 
-        if not os.path.exists(save_path):
-            os.makedirs(save_path)
+        if not os.path.exists(path):
+            os.makedirs(path)
 
-        pdb = PDBParser().get_structure(complex, f'{path}/{complex}.pdb')
+        pdb = PDBParser().get_structure(complex, f'{src_path}/{complex}.pdb')
         io = PDBIO()
         io.set_structure(pdb)
-        io.save(f'{save_path}/{complex.lower()}_protein.pdb', ProtSelect())
-        io.save(f'{save_path}/{complex.lower()}_ligand.pdb', RNASelect())
+        io.save(f'{path}/{complex.lower()}_protein.pdb', ProtSelect())
+        io.save(f'{path}/{complex.lower()}_ligand.pdb', RNASelect())
 
 # remove heteroatom
 def remove_heteroatom(src_path, save_path, complexs):
     for complex in complexs:
         path = os.path.join(src_path, complex)
-        save_path = os.path.join(save_path, complex.lower())
+        dst_path = os.path.join(save_path, complex.lower())
 
-        if not os.path.exists(save_path):
-            os.makedirs(save_path)
+        if not os.path.exists(dst_path):
+            os.makedirs(dst_path)
 
         pdb = PDBParser().get_structure(complex, f'{path}/{complex}_protein.pdb')
         io = PDBIO()
         io.set_structure(pdb)
-        io.save(f'{save_path}/{complex.lower()}_protein.pdb', RemoveHeteroatoms())
+        io.save(f'{dst_path}/{complex.lower()}_protein.pdb', RemoveHeteroatoms())
 
         pdb = PDBParser().get_structure(complex, f'{path}/{complex}_ligand.pdb')
         io = PDBIO()
         io.set_structure(pdb)
-        io.save(f'{save_path}/{complex.lower()}_ligand.pdb', RemoveHeteroatoms())
+        io.save(f'{dst_path}/{complex.lower()}_ligand.pdb', RemoveHeteroatoms())

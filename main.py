@@ -18,7 +18,6 @@ if __name__ == '__main__':
     complex_list = [[] for i in range(10)]
     for i in range(len(complexs)):
         complex_list[i % 10].append(complexs[i])
-        # complex_list.append(complexs[i * step : (i + 1) * step]) # last element in i group is first element in i+1 group
     
     redis_conn = redis.Redis()
     for i in range(10):
